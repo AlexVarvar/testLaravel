@@ -31,3 +31,15 @@ Route::prefix('/products')->group(function () {
     Route::get('/show/{id}', 'Product\ProductController@show')->name('show_product');
 
 });
+
+Route::prefix('/categories')->group(function () {
+
+    Route::get('/', 'Category\CategoryController@index')->name('categories');
+    Route::get('/edit', 'Category\CategoryController@edit')->name('edit_category');
+    Route::post('/update', 'Category\CategoryController@update')->name('update_category');
+    Route::get('/create', 'Category\CategoryController@create')->name('create_category');
+    Route::post('/store', 'Category\CategoryController@store')->name('store_category');
+    Route::get('/delete/{id}', 'Category\CategoryController@destroy')->name('delete_category');
+    Route::get('/show/{id}', 'Category\CategoryController@show')->name('show_category');
+
+});

@@ -1,38 +1,38 @@
 <?php
 
-namespace App\Http\Controllers\Product;
+namespace App\Http\Controllers\Category;
 
+use App\Http\Requests\Category\EditCategoryRequest;
+use App\Http\Requests\Category\StoreCategoryRequest;
+use App\Http\Requests\Category\UpdateCategoryRequest;
+use App\Models\Category;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\EditProduct;
-use App\Http\Requests\StoreProduct as StoreProductAlias;
-use App\Http\Requests\UpdateProduct;
-use App\Models\Product;
 use App\Repositories\Repository;
 
-class ProductController extends Controller
+class CategoryController extends Controller
 {
     const PER_PAGE = 15;
 
     /**
-     * @var Product
+     * @var Category
      */
     protected $model;
 
-    public function __construct(Product $product)
+    public function __construct(Category $model)
     {
-        $this->model = new Repository($product);
+        $this->model = new Repository($model);
     }
 
     /**
      * Display a listing of the resource.
      *
-     * @return Product[]|Repository[]|\Illuminate\Database\Eloquent\Collection
+     * @return Category[]|Repository[]|\Illuminate\Database\Eloquent\Collection
      */
     public function index()
     {
-        $data['products'] = $this->model->paginate(self::PER_PAGE);
+        $data['categories'] = $this->model->paginate(self::PER_PAGE);
 
-        return view('product.list', $data);
+        return view('category.list', $data);
     }
 
     /**
@@ -42,7 +42,7 @@ class ProductController extends Controller
      */
     public function create()
     {
-        return view('product.create', []);
+        return view('category.create', []);
     }
 
     /**
@@ -51,12 +51,12 @@ class ProductController extends Controller
      * @param StoreProductAlias $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreProductAlias $request)
+    public function store(StoreCategoryRequest $request)
     {
         $validated = $request->validated();
         $result = $this->model->create($validated);
 
-        if ($result) return redirect()->route('products');
+        if ($result) return redirect()->route('categories');
     }
 
     /**
@@ -67,39 +67,37 @@ class ProductController extends Controller
      */
     public function show($id)
     {
-        $product = $this->model->show($id);
-        $product['category_title'] = Product::find($id)->category['title'];
+        $category = $this->model->show($id);
 
-        return view('product.show', ['product' => $product]);
+        return view('category.show', ['category' => $category]);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param EditProduct $request
+     * @param EditCategoryRequest $request
      * @return \Illuminate\Http\Response
      */
-    public function edit(EditProduct $request)
+    public function edit(EditCategoryRequest $request)
     {
         $validated = $request->validated();
-        $product = $this->model->show($validated['id']);
-        $product['category_title'] = Product::find($validated['id'])->category['title'];
+        $category = $this->model->show($validated['id']);
 
-        return view('product.edit', ['product' => $product]);
+        return view('category.edit', ['category' => $category]);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param UpdateProduct $request
+     * @param UpdateCategoryRequest $request
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateProduct $request)
+    public function update(UpdateCategoryRequest $request)
     {
         $validated = $request->validated();
         $result = $this->model->update($validated, $request->get('id'));
 
-        if ($result) return redirect()->route('products');
+        if ($result) return redirect()->route('categories');
     }
 
     /**
@@ -113,6 +111,6 @@ class ProductController extends Controller
     {
         $result = $this->model->delete($id);
 
-        if ($result) return redirect()->route('products');
+        if ($result) return redirect()->route('categories');
     }
 }

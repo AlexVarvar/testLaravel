@@ -41,7 +41,7 @@
                 <tr>
                     <td></td>
                     <td>{{ __('product.category') }}</td>
-                    <td>{{ $product->category_id }}</td>
+                    <td>{{ $product->category_title }}</td>
                 </tr>
                 <tr>
                     <td></td>

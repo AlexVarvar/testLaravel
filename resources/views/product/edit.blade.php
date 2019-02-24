@@ -74,7 +74,7 @@
                     <label for="category_id" class="col-md-4 col-form-label text-md-right">{{ __('product.category_id') }}</label>
 
                     <div class="col-md-6">
-                        <input id="category_id" type="text" class="form-control{{ $errors->has('category_id') ? ' is-invalid' : '' }}" name="category_id" value="{{ $product->category_id }}" required>
+                        <input id="category_id" type="text" class="form-control{{ $errors->has('category_id') ? ' is-invalid' : '' }}" name="category_id" value="{{ $product->category_title }}" required>
 
                         @if ($errors->has('category_id'))
                             <span class="invalid-feedback" role="alert">
