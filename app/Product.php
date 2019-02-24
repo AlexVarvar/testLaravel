@@ -16,6 +16,4 @@ class Product extends Model
     ];
 
     protected $primaryKey = 'id';
-
-    protected $hidden = 'id';
 }
