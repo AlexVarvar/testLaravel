@@ -20,8 +20,14 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 
-Route::prefix('products')->group(function () {
+Route::prefix('/products')->group(function () {
 
-    Route::get('/', 'Product\ProductController@index');
+    Route::get('/', 'Product\ProductController@index')->name('products');
+    Route::get('/edit', 'Product\ProductController@edit')->name('edit_product');
+    Route::post('/update', 'Product\ProductController@update')->name('update_product');
+    Route::get('/create', 'Product\ProductController@create')->name('create_product');
+    Route::post('/store', 'Product\ProductController@store')->name('store_product');
+    Route::get('/delete/{id}', 'Product\ProductController@destroy')->name('delete_product');
+    Route::get('/show/{id}', 'Product\ProductController@show')->name('show_product');
 
 });

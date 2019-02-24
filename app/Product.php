@@ -14,4 +14,8 @@ class Product extends Model
         'category_id',
         'amount_ratings'
     ];
+
+    protected $primaryKey = 'id';
+
+    protected $hidden = 'id';
 }
