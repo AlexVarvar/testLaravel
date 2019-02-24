@@ -28,6 +28,11 @@ class Repository implements RepositoryInterface
         return $this->model->all();
     }
 
+    public function paginate($count)
+    {
+        return $this->model->paginate($count);
+    }
+
     // create a new record in the database
     public function create(array $data)
     {
@@ -37,7 +42,7 @@ class Repository implements RepositoryInterface
     // update record in the database
     public function update(array $data, $id)
     {
-        $record = $this->find($id);
+        $record = $this->model->find($id);
         return $record->update($data);
     }
 

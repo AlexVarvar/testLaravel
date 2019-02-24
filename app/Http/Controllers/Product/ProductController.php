@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers\Product;
 
+use App\Http\Requests\EditProduct;
+use App\Http\Requests\StoreProduct as StoreProductAlias;
+use App\Http\Requests\UpdateProduct;
 use App\Product;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -26,7 +29,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $data['products'] = $this->model->all();
+        $data['products'] = $this->model->paginate(15);
 
         return view('product.list', $data);
     }
@@ -38,62 +41,75 @@ class ProductController extends Controller
      */
     public function create()
     {
-        //
+        return view('product.create', []);
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param StoreProductAlias $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreProductAlias $request)
     {
-        //
+        $validated = $request->validated();
+        $result = $this->model->create($validated);
+
+        if ($result) return redirect()->route('products');
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Product  $product
+     * @param $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
     {
-        return $this->model->show($id);
+        $product = $this->model->show($id);
+
+        return view('product.show', ['product' => $product]);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Product  $product
+     * @param EditProduct $request
      * @return \Illuminate\Http\Response
      */
-    public function edit(Product $product)
+    public function edit(EditProduct $request)
     {
-        //
+        $validated = $request->validated();
+        $product = $this->model->show($validated['id']);
+
+        return view('product.edit', ['product' => $product]);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Product  $product
+     * @param UpdateProduct $request
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Product $product)
+    public function update(UpdateProduct $request)
     {
-        //
+        $validated = $request->validated();
+        $result = $this->model->update($validated, $request->get('id'));
+
+        if ($result) return redirect()->route('products');
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Product  $product
-     * @return \Illuminate\Http\Response
+     * @param $id
+     * @return bool|int|null
+     * @throws \Exception
      */
-    public function destroy(Product $product)
+    public function destroy($id)
     {
-        //
+        $result = $this->model->delete($id);
+
+        if ($result) return redirect()->route('products');
     }
 }
